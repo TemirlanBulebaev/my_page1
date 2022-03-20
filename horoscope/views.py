@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 # Create your views here.
 
+
+
 zodiac_dict = {
     "aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля)",
     "taurus": "Телец - второй знак зодиака, планета Венера (с 21 апреля по 21 мая)",
@@ -18,20 +20,12 @@ zodiac_dict = {
     "aquarius": "Водолей - одиннадцатый знак зодиака, планеты Уран и Сатурн (с 21 января по 19 февраля)",
     "pisces": "Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта)"
 }
-
-
 def index(request):
     zodiacs = list(zodiac_dict)
-    li_elements = ""
-    for sign in zodiacs:
-        redirect_path = reverse("horoscope-name", args=[sign])
-        li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
-    response = f"""
-    <ul>
-    {li_elements}
-    <u l>
-    """
-    return HttpResponse(response)
+    context = {
+        "zodiacs": zodiacs
+    }
+    return render(request, "horoscope/index.html", context=context)
 
 
 def get_info_about_sign_zodiac(request, sign_zodiac: str):
