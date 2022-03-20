@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from django.template.loader import render_to_string
 # Create your views here.
 
 zodiac_dict = {
@@ -34,11 +35,12 @@ def index(request):
 
 
 def get_info_about_sign_zodiac(request, sign_zodiac: str):
-    description = zodiac_dict.get(sign_zodiac, None)
-    if description:
-        return HttpResponse(description)
-    else:
-        return HttpResponseNotFound(f"Неизвестный знак зодиака-{sign_zodiac}")
+    description = zodiac_dict.get(sign_zodiac)
+    data = {
+        "description_zodiac" : description,
+        "sign" : sign_zodiac.title(),
+    }
+    return render(request,"horoscope/info_zodiac.html", context=data)
 
 def get_info_about_sign_zodiac_by_number(request, sign_zodiac: int):
     zodiacs = list(zodiac_dict)
